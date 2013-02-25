@@ -11,6 +11,7 @@ package Experiment;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.Map;
 
 public class IntBoard {
@@ -19,7 +20,7 @@ public class IntBoard {
 	private boolean[] visited;
 	private static final int HEIGHT = 4;
 	private static final int WIDTH = 4;
-	
+	private HashSet<Integer> targetCells;
 	// Resets all the varables to defult for tests
 	public IntBoard() {
 		adjMtx = new HashMap();
@@ -27,6 +28,7 @@ public class IntBoard {
 		for(boolean b : visited)
 			b = false;		
 		calcAdjacencies();
+		targetCells = new HashSet<Integer>();
 	}
 
 	// This calculates the adjacent squares at a given cell
@@ -52,14 +54,32 @@ public class IntBoard {
 	}
 	// Make a list of targets from a location on the board
 	public void startTargets(int location, int steps) {
+		// adds location to targetCells if last step
+		if(steps == 0) 
+		{ 
+			targetCells.add(location);
+		}
+		else // mark that we visited this location
+		{
+			visited[location] = true;
+		}
+		// make an Iterator to step though the adjacency matrix
+		ListIterator it_adjMat = adjMtx.get(location).listIterator();
 		
-		
+		while(it_adjMat.hasNext())
+		{
+			int next = (Integer) it_adjMat.next();
+			// checvk to see if we visited the location before
+			if(!visited[next])
+				startTargets(next, steps -1);
+		}
+		// reset visted to false
+		visited[location] = false;
 	}
 	
 	//returns a set of targets
 	public HashSet getTargets() {
-		HashSet returnSet = new HashSet();
-		return returnSet;
+		return targetCells;
 	}
 	
 	// returns the adjacent board locations at a given position on the board
