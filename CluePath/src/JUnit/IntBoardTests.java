@@ -21,13 +21,14 @@ public class IntBoardTests {
 		board = new IntBoard();
 	}
 	
+	@Test
 	public void testCalcIndex() {
 		//Assume a 4 by 4 board
 		int b = board.calcIndex(0, 0);
 		Assert.assertTrue(b == 0);
 		b = board.calcIndex(1, 1);
 		Assert.assertTrue(b == 5);
-		b = board.calcIndex(5, 5);
+		b = board.calcIndex(1, 3);
 		Assert.assertTrue(b == 7);
 	}
 	
